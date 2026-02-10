@@ -70,9 +70,9 @@ gcc snake_game.c -o snake_game $(pkg-config --cflags --libs sdl3)
 
 | Specification | Value |
 |--------------|-------|
-| Window Size | 800x800 pixels |
-| Grid Cell Size | 40x40 pixels |
-| Grid Dimensions | 20x20 cells |
+| Window Size | 900x900 pixels |
+| Grid Cell Size | 30x30 pixels |
+| Grid Dimensions | 30x30 cells |
 | Movement Speed | 250ms delay |
 
 ## Screenshots
