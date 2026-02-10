@@ -3,19 +3,29 @@
 #include <stdio.h>
 #include <unistd.h>
       
-#define CELL_SIZE 40
+#define CELL_SIZE 30
 
 typedef struct snakeElement{
     int x,y;
     struct snakeElement *next;
 }snakeElement;
 
-snakeElement snakePart={.x=40, .y=40};
-//The above elments is 
+snakeElement snakeHead={30, 30, NULL};
+
+//snakeElement *phead = &snakeHead;
+//snakeElement *ptail = &snakeHead;
+
 //typedef struct snake{
-//    snakeElement *head;
-//    snakeElement *tail;
+//    snakeElement **pphead;
+//    snakeElement **pptail;
 //}snake;
+
+typedef struct {
+    snakeElement *head;
+    snakeElement *tail;
+}snake;
+
+snake fullSnake = {&snakeHead, &snakeHead};
 
 typedef struct{
     int x,y;
@@ -28,42 +38,28 @@ typedef struct{
 
 Direction direction={+1,0};
 
+static inline void clear_screen(SDL_Surface *surface, Uint32 color){
+    SDL_FillSurfaceRect(surface,NULL, color);
+}
+
 void draw_grid(SDL_Surface *surface, int size, Uint32 color)
 {
     SDL_Rect row;
-    for(int y =0; y<=20;y++){
-        for(int x=0;x<800;x++){
-            row=(SDL_Rect){x, y*40, 1, 1};
+    for(int y =0; y<=30;y++){
+        for(int x=0;x<900;x++){
+            row=(SDL_Rect){x, y*30, 1, 1};
             SDL_FillSurfaceRect(surface, &row, color);
         }
     }
 
     SDL_Rect col;
-    for(int x = 0; x<=20;x++){
-        for(int y= 0;y<800;y++){
-            col=(SDL_Rect){x*40, y, 1, 1};
+    for(int x = 0; x<=30;x++){
+        for(int y= 0;y<900;y++){
+            col=(SDL_Rect){x*30, y, 1, 1};
             SDL_FillSurfaceRect(surface, &col, color);
         }
     }
 
-}
-
-void draw_snake(SDL_Surface *surface, snakeElement *snake, Uint32 color)
-{
-    SDL_Rect rect={snake->x, snake->y, 40, 40};
-    if(snake->x > (800-CELL_SIZE)){
-        snake->x= -40;
-    }
-    if(snake->x < 0){
-        snake->x = 800;
-    }
-    if(snake->y > (800-CELL_SIZE)){
-        snake->y= -40;
-    }
-    if(snake->y < 0){
-        snake->y = 800;
-    }
-    SDL_FillSurfaceRect(surface,&rect, color);
 }
 
 static inline void move_snake(SDL_Surface *surface, snakeElement *snake, Direction *direction)
@@ -72,18 +68,64 @@ static inline void move_snake(SDL_Surface *surface, snakeElement *snake, Directi
     snake->y+=(direction->dy*CELL_SIZE);
 }
 
-static inline void clear_screen(SDL_Surface *surface, Uint32 color){
-    SDL_FillSurfaceRect(surface,NULL, color);
+void draw_snake(SDL_Surface *surface, snakeElement *snake, Uint32 color)
+{
+    SDL_Rect rect={snake->x, snake->y, 30, 30};
+    if (snake->x >= 900){
+        snake->x = 0;
+    }
+    if (snake->x < 0){
+        snake->x = 900 - CELL_SIZE;
+    }
+    if (snake->y >= 900){
+        snake->y = 0;
+    }
+    if (snake->y < 0){
+        snake->y = 900 - CELL_SIZE;
+    } 
+
+    printf("%d %d\n",snake->x, snake->y);
+    SDL_FillSurfaceRect(surface,&rect, color);
 }
 
-void draw(SDL_Surface *surface, Apple *apple, Uint32 color){
-    SDL_Rect rect = {apple->x, apple->y};
-    SDL_FillSurfaceRect(surface, &rect, color);
+//void draw_apple(SDL_Surface *surface, Apple *apple, Uint32 color){
+//    SDL_Rect rect = {apple->x, apple->y};
+//    SDL_FillSurfaceRect(surface, &rect, color);
+//}
+
+//struct snakeElement* lengthen_snake(snakeElement **tail, snake *fullSnake)
+//{
+//    snakeElement *newPart = (snakeElement *)malloc(sizeof(snakeElement));
+//    if (newPart == NULL){
+//        return NULL;
+//    }
+//    if((*(fullSnake-> pphead))->next == NULL){
+//        (*(fullSnake-> pphead)) -> next = newPart;
+//    }else{
+//        (*(fullSnake-> pptail)) -> next = newPart;
+//    }
+//    *(fullSnake->pptail) = newPart;
+//
+//}
+
+void lengthen_snake(snake *fullSnake)
+{
+    snakeElement *newPart = (snakeElement *)malloc(sizeof(snakeElement));
+
+    *(newPart) = (snakeElement){(*(fullSnake->tail)).x, (*(fullSnake->tail)).y, NULL};
+
+    if( (*(fullSnake -> head)).next == NULL){
+        (*(fullSnake -> head)).next = newPart;
+    }else{
+        (*(fullSnake -> tail)).next = newPart;
+    }
+    (fullSnake -> tail) = newPart;
+
 }
 
 int main(int argc, char *argv[]) {
 
-    SDL_Window *window = SDL_CreateWindow("PPM Viewer", 800, 800, 0);
+    SDL_Window *window = SDL_CreateWindow("PPM Viewer", 900, 900, 0);
     SDL_Surface *surface = SDL_GetWindowSurface(window);
 
     const SDL_PixelFormatDetails *fmt =
@@ -144,10 +186,10 @@ int main(int argc, char *argv[]) {
 
         clear_screen(surface, black);
         draw_grid(surface, CELL_SIZE, white);
-        move_snake(surface, &snakePart, &direction);
-        draw_snake(surface, &snakePart, white);
+        move_snake(surface, &snakeHead, &direction);
+        draw_snake(surface, &snakeHead, white);
         SDL_UpdateWindowSurface(window); 
-        SDL_Delay(250);
+        SDL_Delay(300);
     }
 
     SDL_DestroyWindow(window);
