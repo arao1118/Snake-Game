@@ -51,6 +51,18 @@ void draw_grid(SDL_Surface *surface, int size, Uint32 color)
 void draw_snake(SDL_Surface *surface, snakeElement *snake, Uint32 color)
 {
     SDL_Rect rect={snake->x, snake->y, 40, 40};
+    if(snake->x > (800-CELL_SIZE)){
+        snake->x= -40;
+    }
+    if(snake->x < 0){
+        snake->x = 800;
+    }
+    if(snake->y > (800-CELL_SIZE)){
+        snake->y= -40;
+    }
+    if(snake->y < 0){
+        snake->y = 800;
+    }
     SDL_FillSurfaceRect(surface,&rect, color);
 }
 
@@ -121,7 +133,7 @@ int main(int argc, char *argv[]) {
                 }
                 if(event.key.key==SDLK_DOWN){
                     if(direction.dy == -1){
-                        direction.dy = +1;
+                        direction.dy = -1;
                     }else{
                         direction.dy=+1;
                         direction.dx=0;
