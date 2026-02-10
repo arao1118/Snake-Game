@@ -2,7 +2,6 @@
 #include <SDL3/SDL_main.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 
 #define CELL_SIZE 30
 #define SCREEN_SIZE 900
@@ -136,7 +135,6 @@ void lengthen_snake(snake *fullSnake) {
 }
 
 int main(int argc, char *argv[]) {
-    srand((unsigned int)time(NULL));
     SDL_Init(SDL_INIT_VIDEO);
 
     SDL_Window *window = SDL_CreateWindow("Snake Game", SCREEN_SIZE, SCREEN_SIZE, 0);
