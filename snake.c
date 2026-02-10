@@ -11,7 +11,7 @@ typedef struct snakeElement{
 }snakeElement;
 
 snakeElement snakePart={.x=40, .y=40};
-
+//The above elments is 
 //typedef struct snake{
 //    snakeElement *head;
 //    snakeElement *tail;
