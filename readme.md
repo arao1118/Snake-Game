@@ -1,0 +1,1 @@
+This is a snake game made in C using SDL3.
