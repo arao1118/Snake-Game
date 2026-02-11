@@ -81,14 +81,6 @@ gcc snake.c -o snake $(pkg-config --cflags --libs sdl3)
 
 ![Snake Wrapping Around Edge](./assets/wrap_around_edges.png)
 
-## Current Limitations
-
-- No apple/food collection implemented yet
-- Snake doesn't grow in length
-- No collision detection with self
-- No score tracking
-- No game over condition
-
 <!-- ## Future Enhancements
 
 - [ ] Add apple spawning and collection
