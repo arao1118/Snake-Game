@@ -89,7 +89,7 @@ gcc snake.c -o snake $(pkg-config --cflags --libs sdl3)
 - No score tracking
 - No game over condition
 
-## Future Enhancements
+<!-- ## Future Enhancements
 
 - [ ] Add apple spawning and collection
 - [ ] Implement snake growth mechanism
@@ -98,7 +98,7 @@ gcc snake.c -o snake $(pkg-config --cflags --libs sdl3)
 - [ ] Add difficulty levels (speed adjustment)
 - [ ] Game over screen and restart functionality
 - [ ] Sound effects and background music
-- [ ] High score tracking
+- [ ] High score tracking -->
 
 ## Code Structure
 
