@@ -41,12 +41,12 @@ Download SDL3 development libraries from the official SDL website.
 ## Building
 
 ```bash
-gcc snake_game.c -o snake_game $(sdl3-config --cflags --libs)
+gcc snake.c -o snake $(sdl3-config --cflags --libs)
 ```
 
 Or with pkg-config:
 ```bash
-gcc snake_game.c -o snake_game $(pkg-config --cflags --libs sdl3)
+gcc snake.c -o snake $(pkg-config --cflags --libs sdl3)
 ```
 
 ## Controls
