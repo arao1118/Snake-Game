@@ -77,9 +77,9 @@ gcc snake.c -o snake $(pkg-config --cflags --libs sdl3)
 
 ## Screenshots
 
-![Gameplay Screenshot](./assets/image.png)
+![Gameplay Screenshot](./images/image.png)
 
-![Snake Wrapping Around Edge](./assets/wrap_around_edges.png)
+![Snake Wrapping Around Edge](./images/wrap_around_edges.png)
 
 <!-- ## Future Enhancements
 
