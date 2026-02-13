@@ -82,7 +82,7 @@ gcc snake.c -o snake $(pkg-config --cflags --libs sdl3)
 
 ![Snake Wrapping Around Edge](./images/wrap_around_edges.png)
 
-<!-- ## Future Enhancements -->
+## Future Enhancements
 
 <!-- - [ ] Game over screen and restart functionality -->
 - [ ] Sound effects and background music
