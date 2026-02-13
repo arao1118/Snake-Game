@@ -13,6 +13,7 @@ This is a simple Snake game where the player controls a snake moving on a grid. 
 - Smooth snake movement with keyboard controls
 - Screen wrapping (snake reappears on opposite side when hitting edges)
 - Clean graphics with white grid lines on black background
+- Tracks score and increase the speed of snake as it eats an apple
 
 ## Prerequisites
 
@@ -81,16 +82,10 @@ gcc snake.c -o snake $(pkg-config --cflags --libs sdl3)
 
 ![Snake Wrapping Around Edge](./images/wrap_around_edges.png)
 
-<!-- ## Future Enhancements
+<!-- ## Future Enhancements -->
 
-- [ ] Add apple spawning and collection
-- [ ] Implement snake growth mechanism
-- [ ] Add self-collision detection
-- [ ] Implement score system
-- [ ] Add difficulty levels (speed adjustment)
-- [ ] Game over screen and restart functionality
+<!-- - [ ] Game over screen and restart functionality -->
 - [ ] Sound effects and background music
-- [ ] High score tracking -->
 
 ## Code Structure
 
