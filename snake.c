@@ -178,7 +178,7 @@ int main(int argc, char *argv[]) {
                    if(paused){
                     printf("%s\n", "Game Paused.");
                    }else{
-                    printf("%s\n", "Game Playing");
+                    printf("%s\n", "Game Resumed");
                    }
                 }
 
