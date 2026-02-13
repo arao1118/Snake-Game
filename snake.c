@@ -31,7 +31,7 @@ typedef struct {
 
 Direction direction = {+1, 0};
 
-void spawn_apple(Apple *apple, snakeElement *head) {
+void reset_apple(Apple *apple, snakeElement *head) {
     int collision;
     do {
         collision = 0;
@@ -134,6 +134,14 @@ void lengthen_snake(snake *fullSnake) {
     fullSnake->tail = newPart;
 }
 
+void increase_speed(int *speed){
+    *(speed)-=*(speed) * (0.025);
+}
+
+void increase_score(unsigned long int *score){
+    *(score)+=*(score) * (1);
+}
+
 int main(int argc, char *argv[]) {
     SDL_Init(SDL_INIT_VIDEO);
 
@@ -149,9 +157,12 @@ int main(int argc, char *argv[]) {
     Uint32 red   = SDL_MapRGBA(fmt, NULL, 255, 0, 0, 255);
 
     Apple apple;
-    spawn_apple(&apple, fullSnake.head);
+    reset_apple(&apple, fullSnake.head);
 
     int isRunning = 1;
+    int init_speed = 250;
+    unsigned long int init_score = 1;
+    int paused = 0;
 
     while (isRunning) {
 
@@ -161,37 +172,54 @@ int main(int argc, char *argv[]) {
                 isRunning = 0;
 
             if (event.type == SDL_EVENT_KEY_DOWN) {
-                if (event.key.key == SDLK_RIGHT && direction.dx != -1)
-                    direction = (Direction){1, 0};
-                if (event.key.key == SDLK_LEFT && direction.dx != 1)
-                    direction = (Direction){-1, 0};
-                if (event.key.key == SDLK_UP && direction.dy != 1)
-                    direction = (Direction){0, -1};
-                if (event.key.key == SDLK_DOWN && direction.dy != -1)
-                    direction = (Direction){0, 1};
+                if (event.key.scancode ==  SDL_SCANCODE_SPACE)
+                {
+                   paused=!paused; 
+                   if(paused){
+                    printf("%s\n", "Game Paused.");
+                   }else{
+                    printf("%s\n", "Game Playing");
+                   }
+                }
+
+                    if (event.key.key == SDLK_RIGHT && direction.dx != -1)
+                        direction = (Direction){1, 0};
+                    if (event.key.key == SDLK_LEFT && direction.dx != 1)
+                        direction = (Direction){-1, 0};
+                    if (event.key.key == SDLK_UP && direction.dy != 1)
+                        direction = (Direction){0, -1};
+                    if (event.key.key == SDLK_DOWN && direction.dy != -1)
+                        direction = (Direction){0, 1};
             }
         }
 
-        move_snake(fullSnake.head, &direction);
+        if(!paused){
 
-        if (check_self_collision(fullSnake.head)) {
-            printf("Game Over! You hit yourself.\n");
-            isRunning = 0;
+            move_snake(fullSnake.head, &direction);
+
+            if (check_self_collision(fullSnake.head)) {
+                printf("Game Over! You hit yourself.\n");
+                isRunning = 0;
+            }
+
+            if (fullSnake.head->x == apple.x && fullSnake.head->y == apple.y) {
+
+                increase_speed(&init_speed);
+                increase_score(&init_score);
+                lengthen_snake(&fullSnake);
+                reset_apple(&apple, fullSnake.head);
+                printf("Final Score: %lu\n", init_score);
+            }
         }
-
-        if (fullSnake.head->x == apple.x && fullSnake.head->y == apple.y) {
-
-            lengthen_snake(&fullSnake);
-            spawn_apple(&apple, fullSnake.head);
-        }
-
         clear_screen(surface, black);
         draw_grid(surface, white);
         draw_apple(surface, &apple, red);
         draw_snake(surface, fullSnake.head, white);
 
+        //printf("Current Speed: %.6f\n", (float)(1000/init_speed));
         SDL_UpdateWindowSurface(window);
-        SDL_Delay(250);
+        SDL_Delay(init_speed);
+
     }
 
     snakeElement *curr = fullSnake.head->next;
